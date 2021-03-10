@@ -6,7 +6,7 @@ namespace MSI2.Algorithms
 {
     public class GreedySolver : ICVRPSolver
     {
-        public (List<List<Node>> VisitedNodes, int TotalDistance) Solve(Graph graph, int vehiclesNumber, int sMax)
+        public (List<List<Node>> VisitedNodes, int TotalDistance) Solve(Graph graph, int vehiclesNumber, int capacity, int sMax)
         {
             throw new NotImplementedException();
         }

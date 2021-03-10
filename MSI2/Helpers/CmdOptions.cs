@@ -15,5 +15,14 @@ namespace MSI2.Helpers
 
         [Option('a', "algorithm", Required = true, HelpText = "Algorithm type")]
         public int AlgorithmType { get; set; }
+
+        [Option('v', "vehicles", Required = true, HelpText = "Vehicles number")]
+        public int VehiclesNumber { get; set; }
+
+        [Option('c', "capacity", Required = true, HelpText = "Capacity")]
+        public int Capacity { get; set; }
+
+        [Option('s', "smax", Required = true, HelpText = "S Max")]
+        public int SMax { get; set; }
     }
 }

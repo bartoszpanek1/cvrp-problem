@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MSI2": {
+      "commandName": "Project",
+      "commandLineArgs": "-i input -o output -a 1 -v 2 -c 10 -s 50"
+    }
+  }
+}

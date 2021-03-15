@@ -26,11 +26,11 @@ namespace MSI2
             ICVRPSolver solver = SolversFactory.CreateSolver(algType);
 
             Stopwatch stopwatch = Stopwatch.StartNew();
-            (List<List<Node>> VisitedNodes, int TotalDistance) = solver.Solve(graph, numberOfVehicles, capacity, SMax);
+            (List<List<Node>> vehicles, int TotalDistance) = solver.Solve(graph, numberOfVehicles, capacity, SMax);
             stopwatch.Stop();
             Console.WriteLine($"Total time: {stopwatch.ElapsedMilliseconds} ms");
 
-            await OutputWriter.WriteOutput(outputPath, VisitedNodes);
+            await OutputWriter.WriteOutput(outputPath, vehicles, TotalDistance);
         }
 
         private static void ReadArgs(

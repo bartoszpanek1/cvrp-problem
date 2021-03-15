@@ -1,4 +1,5 @@
 ﻿using MSI2.Graphs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,21 +9,19 @@ namespace MSI2.Algorithms
     {
         public (List<List<Node>> VisitedNodes, int TotalDistance) Solve(Graph graph, int vehiclesNumber, int capacity, int sMax)
         {
-            int visitedNodesNum = 0;
             int totalDistance = 0;
             var visitedNodes = new List<List<Node>>();
 
             for (int i = 0; i < vehiclesNumber; i++)
             {
-                Node lastNode = graph.NodeList[0]; ;
-                Node currentNode = graph.NodeList[0];
+                Node lastNode = graph.NodeList[Graph.START_INDEX]; ;
+                Node currentNode = graph.NodeList[Graph.START_INDEX];
                 int currentDistance = sMax;
                 int currentCapacity = capacity;
                 var visited = new List<Node>();
 
                 while (currentNode != null)
                 {
-                    visitedNodesNum++;
                     visited.Add(currentNode);
                     currentDistance -= graph.GetDistance(lastNode.id, currentNode.id);
                     totalDistance += graph.GetDistance(lastNode.id, currentNode.id);
@@ -31,7 +30,7 @@ namespace MSI2.Algorithms
                     lastNode = currentNode;
                     currentNode = NextNode(graph, currentNode.id, currentDistance, currentCapacity);
 
-                    if (currentNode.id == 0)
+                    if (currentNode.id == Graph.START_INDEX)
                     {
                         visitedNodes.Add(visited);
                         break;
@@ -40,7 +39,7 @@ namespace MSI2.Algorithms
                     currentNode.visited = true;
                 }
 
-                if (visitedNodesNum == graph.NodeList.Count)
+                if (graph.HasVisitedAllNodes)
                 {
                     return (visitedNodes, totalDistance);
                 }
@@ -48,16 +47,26 @@ namespace MSI2.Algorithms
             return (null, -1);
         }
 
-        public Node NextNode(Graph graph, int currentNodeNumber, int currentDistance, int currentCapacity)
+        private Node NextNode(Graph graph, int currentNodeNumber, int currentDistance, int currentCapacity)
         {
-            var sortedByValidCapacity = graph.AdjList[currentNodeNumber]
-                .Where(n => currentCapacity - graph.NodeList[n.id].demand >= 0 && !graph.NodeList[n.id].visited)
+            List<(int id, int distance)> sortedByValidCapacity = graph.AdjList[currentNodeNumber]
+                .Where(n => currentCapacity - graph.NodeList[n.id].demand >= 0
+                    && !graph.NodeList[n.id].visited
+                    && n.id != Graph.START_INDEX)
                 .OrderBy(n => n.distance)
                 .ToList();
+
+            PushStartNode(sortedByValidCapacity, graph, currentNodeNumber);
 
             return sortedByValidCapacity.Any() && sortedByValidCapacity[0].distance <= currentDistance
                 ? graph.NodeList[sortedByValidCapacity[0].id]
                 : null;
+        }
+
+        private void PushStartNode(List<(int id, int distance)> sortedByValidCapacity, Graph graph, int currentNodeNumber)
+        {
+            if(currentNodeNumber != Graph.START_INDEX)
+                sortedByValidCapacity.Add(graph.AdjList[currentNodeNumber][Graph.START_INDEX]);
         }
     }
 }

@@ -5,12 +5,15 @@ namespace MSI2.Graphs
 {
     public class Graph
     {
+        public const int START_INDEX = 0;
         public Dictionary<int, List<(int id, int distance)>> AdjList { get; set; } = new Dictionary<int, List<(int id, int distance)>>();
         public List<Node> NodeList { get; set; } = new List<Node>();
 
+        public bool HasVisitedAllNodes => NodeList.All(n => n.visited || n.id == START_INDEX);
+
         public Graph(int[] capacities)
         {
-            NodeList = new List<Node> { new Node(0, 0) };
+            NodeList = new List<Node> { new Node(START_INDEX, 0) };
             NodeList.AddRange(capacities.Select((c, id) => new Node(id + 1, c)));
             AdjList = new Dictionary<int, List<(int id, int distance)>>();
             NodeList.ForEach(n => AdjList.Add(n.id, new List<(int id, int distance)>()));

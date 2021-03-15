@@ -7,6 +7,7 @@ namespace MSI2.Algorithms
 {
     public class GreedySolver : ICVRPSolver
     {
+
         public (List<List<Node>> VisitedNodes, int TotalDistance) Solve(Graph graph, int vehiclesNumber, int capacity, int sMax)
         {
             int totalDistance = 0;
@@ -22,6 +23,7 @@ namespace MSI2.Algorithms
 
                 while (currentNode != null)
                 {
+                    Console.WriteLine($"Vehicle num {i}, current node {currentNode.id}");
                     visited.Add(currentNode);
                     currentDistance -= graph.GetDistance(lastNode.id, currentNode.id);
                     totalDistance += graph.GetDistance(lastNode.id, currentNode.id);
@@ -29,7 +31,10 @@ namespace MSI2.Algorithms
                     currentCapacity -= currentNode.demand;
                     lastNode = currentNode;
                     currentNode = NextNode(graph, currentNode.id, currentDistance, currentCapacity);
-
+                    if (currentNode == null)
+                    {
+                        return (null, -1);
+                    }
                     if (currentNode.id == Graph.START_INDEX)
                     {
                         visitedNodes.Add(visited);
@@ -52,7 +57,7 @@ namespace MSI2.Algorithms
             List<(int id, int distance)> sortedByValidCapacity = graph.AdjList[currentNodeNumber]
                 .Where(n => currentCapacity - graph.NodeList[n.id].demand >= 0
                     && !graph.NodeList[n.id].visited
-                    && n.id != Graph.START_INDEX)
+                    && n.id != Graph.START_INDEX && graph.GetDistance(currentNodeNumber, n.id) <= currentDistance)
                 .OrderBy(n => n.distance)
                 .ToList();
 
@@ -65,8 +70,9 @@ namespace MSI2.Algorithms
 
         private void PushStartNode(List<(int id, int distance)> sortedByValidCapacity, Graph graph, int currentNodeNumber)
         {
-            if(currentNodeNumber != Graph.START_INDEX)
+            if (currentNodeNumber != Graph.START_INDEX)
                 sortedByValidCapacity.Add(graph.AdjList[currentNodeNumber][Graph.START_INDEX]);
         }
+
     }
 }

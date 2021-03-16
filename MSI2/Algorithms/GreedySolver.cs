@@ -7,6 +7,7 @@ namespace MSI2.Algorithms
 {
     public class GreedySolver : ICVRPSolver
     {
+        private static readonly (List<List<Node>> VisitedNodes, int TotalDistance) NO_RESULT = (null, -1);
 
         public (List<List<Node>> VisitedNodes, int TotalDistance) Solve(Graph graph, int vehiclesNumber, int capacity, int sMax)
         {
@@ -27,14 +28,16 @@ namespace MSI2.Algorithms
                     visited.Add(currentNode);
                     currentDistance -= graph.GetDistance(lastNode.id, currentNode.id);
                     totalDistance += graph.GetDistance(lastNode.id, currentNode.id);
-
                     currentCapacity -= currentNode.demand;
+
                     lastNode = currentNode;
                     currentNode = NextNode(graph, currentNode.id, currentDistance, currentCapacity);
+
                     if (currentNode == null)
                     {
-                        return (null, -1);
+                        return NO_RESULT;
                     }
+
                     if (currentNode.id == Graph.START_INDEX)
                     {
                         visitedNodes.Add(visited);
@@ -49,7 +52,8 @@ namespace MSI2.Algorithms
                     return (visitedNodes, totalDistance);
                 }
             }
-            return (null, -1);
+
+            return NO_RESULT;
         }
 
         private Node NextNode(Graph graph, int currentNodeNumber, int currentDistance, int currentCapacity)
@@ -57,7 +61,8 @@ namespace MSI2.Algorithms
             List<(int id, int distance)> sortedByValidCapacity = graph.AdjList[currentNodeNumber]
                 .Where(n => currentCapacity - graph.NodeList[n.id].demand >= 0
                     && !graph.NodeList[n.id].visited
-                    && n.id != Graph.START_INDEX && graph.GetDistance(currentNodeNumber, n.id) <= currentDistance)
+                    && n.id != Graph.START_INDEX
+                    && graph.GetDistance(currentNodeNumber, n.id) <= currentDistance)
                 .OrderBy(n => n.distance)
                 .ToList();
 

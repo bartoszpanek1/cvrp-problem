@@ -2,7 +2,7 @@
   "profiles": {
     "MSI2": {
       "commandName": "Project",
-      "commandLineArgs": "-i C:\\dev\\cvrp-problem\\MSI2\\exampleInput.txt -o output -a 0 -v 2 -c 3 -s 50"
+      "commandLineArgs": "-i C:\\Users\\b.panek\\Desktop\\997.txt -o output -a 0 -v 3 -c 15 -s 50"
     }
   }
 }

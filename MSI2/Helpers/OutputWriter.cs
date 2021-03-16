@@ -26,7 +26,7 @@ namespace MSI2.Helpers
         {
             using StreamWriter writer = File.CreateText(path);
 
-            if (vehicles != null)
+            if (vehicles == null)
             {
                 await writer.WriteLineAsync("No result has been found");
                 return;

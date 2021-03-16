@@ -1,0 +1,2 @@
+Total distance: 11
+0 1 2 3 

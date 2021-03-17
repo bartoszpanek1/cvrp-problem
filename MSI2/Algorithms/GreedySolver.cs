@@ -58,22 +58,22 @@ namespace MSI2.Algorithms
 
         private Node NextNode(Graph graph, int currentNodeNumber, int currentDistance, int currentCapacity)
         {
-            List<(int id, int distance)> sortedByValidCapacity = graph.AdjList[currentNodeNumber]
-                .Where(n => currentCapacity - graph.NodeList[n.id].demand >= 0
-                    && !graph.NodeList[n.id].visited
-                    && n.id != Graph.START_INDEX
-                    && graph.GetDistance(currentNodeNumber, n.id) <= currentDistance)
-                .OrderBy(n => n.distance)
+            List<EdgeDetails> sortedByValidCapacity = graph.AdjList[currentNodeNumber]
+                .Where(n => currentCapacity - graph.NodeList[n.ToId].demand >= 0
+                    && !graph.NodeList[n.ToId].visited
+                    && n.ToId != Graph.START_INDEX
+                    && graph.GetDistance(currentNodeNumber, n.ToId) <= currentDistance)
+                .OrderBy(n => n.Distance)
                 .ToList();
 
             PushStartNode(sortedByValidCapacity, graph, currentNodeNumber);
 
-            return sortedByValidCapacity.Any() && sortedByValidCapacity[0].distance <= currentDistance
-                ? graph.NodeList[sortedByValidCapacity[0].id]
+            return sortedByValidCapacity.Any() && sortedByValidCapacity[0].Distance <= currentDistance
+                ? graph.NodeList[sortedByValidCapacity[0].ToId]
                 : null;
         }
 
-        private void PushStartNode(List<(int id, int distance)> sortedByValidCapacity, Graph graph, int currentNodeNumber)
+        private void PushStartNode(List<EdgeDetails> sortedByValidCapacity, Graph graph, int currentNodeNumber)
         {
             if (currentNodeNumber != Graph.START_INDEX)
                 sortedByValidCapacity.Add(graph.AdjList[currentNodeNumber][Graph.START_INDEX]);

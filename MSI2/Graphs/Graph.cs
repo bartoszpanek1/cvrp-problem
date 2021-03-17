@@ -64,5 +64,25 @@ namespace MSI2.Graphs
             AdjList[from].First(e => e.ToId == to).Pheromone = pheromone;
             AdjList[to].First(e => e.ToId == from).Pheromone = pheromone;
         }
+
+        public void PrintPheromones()
+        {
+            Console.WriteLine("Pheromones");
+
+            for(int i = 0; i < NodeList.Count; ++i)
+            {
+                for(int j = 0; j < NodeList.Count - 1; ++j)
+                {
+                    if(j == i)
+                    {
+                        Console.Write("xxxx ");
+                    }
+
+                    Console.Write($"{AdjList[i][j].Pheromone:0.##} ");
+                }
+                Console.Write("\n");
+            }
+            Console.WriteLine("End pheromones");
+        }
     }
 }

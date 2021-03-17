@@ -12,5 +12,8 @@
             Distance = distance;
             Pheromone = pheromone;
         }
+
+        public override string ToString() =>
+            $"to:{ToId}, d:{Distance}, p:{Pheromone:0.##}";
     }
 }

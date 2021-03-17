@@ -12,7 +12,8 @@
             visited = false;
         }
 
-        public override bool Equals(object obj) =>
-            obj is Node node2 && node2.id == id;
+        public override string ToString() =>
+            $"id:{id}, d:{demand}, v:{(visited ? 1 : 0)}";
+
     }
 }

@@ -31,6 +31,8 @@ namespace MSI2
             Console.WriteLine($"Total time: {stopwatch.ElapsedMilliseconds} ms");
 
             await OutputWriter.WriteOutput(outputPath, vehicles, TotalDistance);
+            Console.WriteLine($"Best total distance: {TotalDistance}");
+            PrintHelper.PrintNodeListList(vehicles);
         }
 
         private static void ReadArgs(

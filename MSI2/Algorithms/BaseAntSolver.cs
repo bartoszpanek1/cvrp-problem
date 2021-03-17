@@ -1,4 +1,5 @@
 ﻿using MSI2.Graphs;
+using MSI2.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,7 @@ namespace MSI2.Algorithms
 
                 EvaporatePheromone(graph);
                 globalAction(antsRoutes);
+                graph.PrintPheromones();
 
                 (List<List<Node>> bestResultOfIteration, int bestDistanceOfIteration) = FindBestResult(graph, antsRoutes);
                 (bestDistance, result) = bestDistance > bestDistanceOfIteration
@@ -51,8 +53,6 @@ namespace MSI2.Algorithms
 
         private (List<List<Node>> bestResult, int distance) FindBestResult(Graph graph, List<List<Node>> antsRoutes)
         {
-            List<int> distances = new List<int>();
-            antsRoutes.ForEach(a => distances.Add(CalculateDistance(graph, a)));
             List<Node> bestResult = antsRoutes.OrderBy(a => CalculateDistance(graph, a)).FirstOrDefault();
             return (TranslateResult(bestResult), CalculateDistance(graph, bestResult));
         }
@@ -62,7 +62,7 @@ namespace MSI2.Algorithms
             if (route == null)
                 return null;
 
-            List<List<Node>> result = new List<List<Node>>();// { new List<Node>() };
+            List<List<Node>> result = new List<List<Node>>();
             List<Node> temp = new List<Node>();
 
             route.ForEach(n =>
@@ -102,7 +102,6 @@ namespace MSI2.Algorithms
             Node currentNode = graph.NodeList[Graph.START_INDEX];
             int currentDistance = sMax;
             int currentCapacity = capacity;
-            var visited = new List<Node>();
 
             while (currentNode != null && vehiclesNumber > 0)
             {
@@ -124,6 +123,9 @@ namespace MSI2.Algorithms
                 UpdateEdges(graph, currentNode, lastNode, localAction);
             }
 
+            visitedNodes?.Add(graph.NodeList[Graph.START_INDEX]);
+            //PrintHelper.PrintNodeList(visitedNodes);
+
             return graph.HasVisitedAllNodes
                 ? visitedNodes
                 : null;
@@ -139,7 +141,7 @@ namespace MSI2.Algorithms
 
         private Node NextNode(Graph graph, int id, int currentDistance, int currentCapacity)
         {
-            List<EdgeDetails> availableEdges= graph.AdjList[id]
+            List<EdgeDetails> availableEdges = graph.AdjList[id]
                 .Where(e => !graph.NodeList[e.ToId].visited
                     && e.Distance <= currentDistance
                     && graph.NodeList[e.ToId].demand <= currentCapacity
@@ -169,7 +171,7 @@ namespace MSI2.Algorithms
         }
 
         private double CalculateEdgeRatio(EdgeDetails e, double n) =>
-            Math.Pow(e.Pheromone, ALPHA) * Math.Pow(1 / e.Distance, BETA) / n + 1 / n;
+            Math.Pow(e.Pheromone + 1.0 / n, ALPHA) * Math.Pow(1.0 / e.Distance, BETA) / n + 1.0 / n;
 
         private void EvaporatePheromone(Graph graph)
         {

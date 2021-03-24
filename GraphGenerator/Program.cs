@@ -1,12 +1,16 @@
 ﻿using CommandLine;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GraphGenerator
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
+            Random rand = new Random();
+
             ReadArgs(
                 args,
                 out string outputPath,
@@ -14,7 +18,10 @@ namespace GraphGenerator
                 out int maxDemand,
                 out int maxWeight);
 
+            List<int> demands = GraphCreator.GenerateDemands(verticesNumber, maxDemand);
+            int[,] weights = GraphCreator.GeneratetMatrix(verticesNumber, maxWeight);
 
+            await OutputWriter.WriteOutput(outputPath, demands, weights);
         }
 
         private static void ReadArgs(

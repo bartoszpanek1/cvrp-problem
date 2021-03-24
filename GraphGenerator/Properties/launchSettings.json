@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "GraphGenerator": {
+      "commandName": "Project",
+      "commandLineArgs": "-o C:\\dev\\cvrp-problem\\MSI2\\datasets\\generatedInput2.txt -v 15 -d 5 -w 10"
+    }
+  }
+}

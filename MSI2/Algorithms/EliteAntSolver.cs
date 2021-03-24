@@ -30,6 +30,9 @@ namespace MSI2.Algorithms
 
         private int CalculateTotalDist(Graph graph, List<Node> route)
         {
+            if (route == null)
+                return 0;
+
             int dist = 0;
 
             for (int i = 1; i < route.Count; ++i)
@@ -37,7 +40,7 @@ namespace MSI2.Algorithms
                 dist += graph.GetDistance(route[i - 1].id, route[i].id);
             }
 
-            return dist + graph.GetDistance(route[route.Count - 1].id, Graph.START_INDEX);
+            return dist + graph.GetDistance(route[^1].id, Graph.START_INDEX);
         }
 
         private void PlacePheromoneForSingleResult(Graph graph, List<Node> route)

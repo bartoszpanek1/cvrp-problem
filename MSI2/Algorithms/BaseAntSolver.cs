@@ -11,7 +11,7 @@ namespace MSI2.Algorithms
     {
         private const int ANTS_NUMBER = 10;
         private const int ITERATIONS = 10;
-        private const int ALPHA = 10;
+        private const int ALPHA = 1;
         private const int BETA = 1;
         private const double EVAPORATION_RATIO = 0.1;
         private readonly Random _rand = new Random();

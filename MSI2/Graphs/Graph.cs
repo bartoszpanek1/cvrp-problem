@@ -39,11 +39,15 @@ namespace MSI2.Graphs
                 : 0;
 
         public (EdgeDetails e1, EdgeDetails e2) GetEdges(int from, int to) =>
-            (AdjList[from].First(e => e.ToId == to), AdjList[to].First(e => e.ToId == from));
+            (AdjList[from].FirstOrDefault(e => e.ToId == to), AdjList[to].FirstOrDefault(e => e.ToId == from));
 
         public void PerformOnBothEdges(int from, int to, Action<EdgeDetails> action)
         {
             (EdgeDetails e1, EdgeDetails e2) = GetEdges(from, to);
+            if(e1==null || e2==null)
+            {
+                return;
+            }
             action(e1);
             action(e2);
         }

@@ -26,7 +26,7 @@ namespace MSI2.Algorithms
 
         private void PlacePheromoneForSingleResult(Graph graph, List<Node> route)
         {
-            for (int i = 1; i < route.Count; ++i)
+            for (int i = 1; route!=null && i < route.Count; ++i)
             {
                 graph.PerformOnBothEdges(route[i - 1].id, route[i].id, e => e.Pheromone += AMOUNT_OF_PHEROMONE_TO_PLACE);
             }

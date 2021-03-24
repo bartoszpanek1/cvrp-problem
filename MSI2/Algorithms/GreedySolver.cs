@@ -41,6 +41,7 @@ namespace MSI2.Algorithms
                     if (currentNode.id == Graph.START_INDEX)
                     {
                         visitedNodes.Add(visited);
+                        totalDistance += graph.GetDistance(lastNode.id, Graph.START_INDEX);
                         break;
                     }
 

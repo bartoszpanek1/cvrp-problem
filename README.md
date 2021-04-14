@@ -11,7 +11,10 @@ GraphGenerator generates random graph that helps testing algorithms.
 2 - local ACO
 3 - elite ACO
 
+
+
 MSI2
+
   -i, --input        Required. Input file
   
   -o, --output       Required. Output file
@@ -29,7 +32,10 @@ MSI2
  
   --version          Display version information.
 
+
+
 GraphGenerator
+
   -o, --output      Required. Output file
  
   -v, --vertives    Required. Number of vertices
